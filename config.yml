@@ -1,0 +1,38 @@
+backend:
+  name: github
+  repo: yourusername/yourusername.github.io
+  branch: main
+
+media_folder: "images/uploads"
+
+collections:
+  - name: "portfolio"
+    label: "Portfolio Projects"
+    folder: "_projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Project Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "select",
+          options: ["Dashboard Development", "Data Analytics", "CRM Management", "Market Research", "SQL & Database", "Excel Automation"] }
+      - { label: "Tools Used", name: "tools", widget: "list" }
+      - { label: "Problem", name: "problem", widget: "text" }
+      - { label: "Solution", name: "solution", widget: "text" }
+      - { label: "Results", name: "results", widget: "string" }
+      - { label: "Thumbnail Emoji", name: "emoji", widget: "string", default: "📊" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
+
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "select",
+          options: ["Excel Tips", "Power BI", "SQL", "Data Analytics", "AI Automation", "Business Intelligence"] }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Read Time (mins)", name: "readtime", widget: "number", default: 5 }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
