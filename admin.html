@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Bilal Khan</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0a1628;min-height:100vh;color:#fff}
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.login-box{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:400px;color:#0f172a}
+.login-logo{font-size:1.4rem;font-weight:800;margin-bottom:8px}
+.login-logo span{color:#2563eb}
+.login-sub{font-size:0.875rem;color:#64748b;margin-bottom:28px}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:0.8rem;font-weight:600;color:#475569;margin-bottom:6px}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:0.9rem;outline:none;font-family:inherit}
+.form-input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+.login-btn{width:100%;padding:13px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+.login-btn:hover{background:#3b82f6}
+.login-error{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:0.85rem;color:#dc2626;margin-bottom:16px;display:none}
+
+/* ADMIN PANEL */
+.admin-wrap{display:none;min-height:100vh;background:#f8fafc}
+.admin-nav{background:#0a1628;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.admin-nav-logo{font-size:1rem;font-weight:800;color:#fff}
+.admin-nav-logo span{color:#3b82f6}
+.admin-nav-right{display:flex;align-items:center;gap:12px}
+.admin-user{font-size:0.8rem;color:rgba(255,255,255,0.6)}
+.admin-logout{font-size:0.8rem;font-weight:600;color:#ef4444;cursor:pointer;padding:6px 12px;border-radius:6px;border:1px solid rgba(239,68,68,0.3)}
+.admin-logout:hover{background:rgba(239,68,68,0.1)}
+.admin-body{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 60px)}
+.admin-sidebar{background:#fff;border-right:1px solid #e2e8f0;padding:24px 0}
+.sidebar-section{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#94a3b8;padding:0 20px;margin-bottom:8px;margin-top:20px}
+.sidebar-link{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:0.875rem;font-weight:500;color:#475569;cursor:pointer;transition:all 0.2s}
+.sidebar-link:hover,.sidebar-link.active{background:#f1f5f9;color:#2563eb}
+.sidebar-link.active{border-right:3px solid #2563eb;font-weight:600}
+.sidebar-icon{font-size:1rem}
+.admin-main{padding:32px}
+.admin-panel{display:none}
+.admin-panel.active{display:block}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.panel-title{font-size:1.4rem;font-weight:800;color:#0f172a}
+.panel-count{font-size:0.8rem;color:#64748b;margin-top:4px}
+.btn-add{background:#2563eb;color:#fff;padding:10px 20px;border-radius:8px;font-size:0.875rem;font-weight:600;cursor:pointer;border:none;font-family:inherit;display:flex;align-items:center;gap:8px}
+.btn-add:hover{background:#3b82f6}
+.entries-grid{display:grid;gap:16px}
+.entry-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.entry-card:hover{border-color:#2563eb;box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.entry-info{flex:1}
+.entry-title{font-weight:700;color:#0f172a;margin-bottom:4px}
+.entry-meta{font-size:0.8rem;color:#64748b}
+.entry-tag{display:inline-block;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:100px;background:rgba(37,99,235,0.08);color:#2563eb;margin-right:6px}
+.entry-actions{display:flex;gap:8px;flex-shrink:0}
+.btn-edit{padding:7px 14px;border-radius:7px;font-size:0.8rem;font-weight:600;cursor:pointer;border:1.5px solid #e2e8f0;background:#fff;color:#475569;font-family:inherit}
+.btn-edit:hover{border-color:#2563eb;color:#2563eb}
+.btn-delete{padding:7px 14px;border-radius:7px;font-size:0.8rem;font-weight:600;cursor:pointer;border:1.5px solid #fecaca;background:#fff;color:#ef4444;font-family:inherit}
+.btn-delete:hover{background:#fef2f2}
+.empty-state{text-align:center;padding:64px 24px;color:#94a3b8}
+.empty-icon{font-size:3rem;margin-bottom:12px}
+.empty-text{font-size:1rem;font-weight:600;margin-bottom:8px;color:#64748b}
+.empty-sub{font-size:0.875rem}
+
+/* FORM MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto}
+.modal-header{padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;border-bottom:1px solid #e2e8f0;padding-bottom:16px}
+.modal-title{font-size:1.1rem;font-weight:800;color:#0f172a}
+.modal-close{font-size:1.4rem;cursor:pointer;color:#94a3b8;background:none;border:none;padding:4px}
+.modal-close:hover{color:#0f172a}
+.modal-body{padding:24px 28px}
+.modal-footer{padding:0 28px 24px;display:flex;gap:10px;justify-content:flex-end}
+.mform-group{margin-bottom:18px}
+.mform-label{display:block;font-size:0.8rem;font-weight:600;color:#475569;margin-bottom:6px}
+.mform-input,.mform-select,.mform-textarea{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:0.875rem;outline:none;font-family:inherit;color:#0f172a;background:#fff}
+.mform-input:focus,.mform-select:focus,.mform-textarea:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
+.mform-textarea{min-height:90px;resize:vertical}
+.mform-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn-save{background:#2563eb;color:#fff;padding:11px 24px;border-radius:8px;font-weight:700;cursor:pointer;border:none;font-family:inherit;font-size:0.9rem}
+.btn-save:hover{background:#3b82f6}
+.btn-cancel{background:#f1f5f9;color:#475569;padding:11px 24px;border-radius:8px;font-weight:600;cursor:pointer;border:none;font-family:inherit;font-size:0.9rem}
+.btn-cancel:hover{background:#e2e8f0}
+.published-toggle{display:flex;align-items:center;gap:10px;font-size:0.875rem;color:#475569}
+.toggle{width:40px;height:22px;background:#e2e8f0;border-radius:100px;position:relative;cursor:pointer;transition:0.2s}
+.toggle.on{background:#2563eb}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.toggle.on::after{left:21px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#0a1628;color:#fff;padding:12px 24px;border-radius:10px;font-size:0.875rem;font-weight:600;z-index:2000;transition:transform 0.3s;border:1px solid rgba(255,255,255,0.1)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(52,211,153,0.4)}
+@media(max-width:700px){
+  .admin-body{grid-template-columns:1fr}
+  .admin-sidebar{display:none}
+  .mform-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Bilal<span>.</span>Khan</div>
+    <div class="login-sub">Admin Panel — Sign in to manage your content</div>
+    <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-input" id="loginPassword" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-wrap" id="adminWrap">
+  <nav class="admin-nav">
+    <div class="admin-nav-logo">Bilal<span>.</span>Khan <span style="color:rgba(255,255,255,0.3);font-weight:400;font-size:0.8rem;">· Admin</span></div>
+    <div class="admin-nav-right">
+      <span class="admin-user">bilalkhaninsights.netlify.app</span>
+      <span class="admin-logout" onclick="doLogout()">Sign Out</span>
+    </div>
+  </nav>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <div class="sidebar-section">Content</div>
+      <div class="sidebar-link active" onclick="switchPanel('portfolio',this)"><span class="sidebar-icon">📊</span> Portfolio Projects</div>
+      <div class="sidebar-link" onclick="switchPanel('blog',this)"><span class="sidebar-icon">✍️</span> Blog Posts</div>
+      <div class="sidebar-section">Site</div>
+      <div class="sidebar-link" onclick="window.open('https://bilalkhaninsights.netlify.app','_blank')"><span class="sidebar-icon">🌐</span> View Live Site</div>
+      <div class="sidebar-link" onclick="window.open('https://app.netlify.com','_blank')"><span class="sidebar-icon">⚙️</span> Netlify Dashboard</div>
+    </div>
+    <div class="admin-main">
+
+      <!-- PORTFOLIO PANEL -->
+      <div class="admin-panel active" id="panel-portfolio">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Portfolio Projects</div>
+            <div class="panel-count" id="portfolioCount">0 projects</div>
+          </div>
+          <button class="btn-add" onclick="openModal('portfolio')">+ Add Project</button>
+        </div>
+        <div class="entries-grid" id="portfolioList"></div>
+      </div>
+
+      <!-- BLOG PANEL -->
+      <div class="admin-panel" id="panel-blog">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Blog Posts</div>
+            <div class="panel-count" id="blogCount">0 posts</div>
+          </div>
+          <button class="btn-add" onclick="openModal('blog')">+ New Post</button>
+        </div>
+        <div class="entries-grid" id="blogList"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PORTFOLIO MODAL -->
+<div class="modal-overlay" id="portfolioModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="portfolioModalTitle">Add Portfolio Project</div>
+      <button class="modal-close" onclick="closeModal('portfolio')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mform-group">
+        <label class="mform-label">Project Title *</label>
+        <input type="text" class="mform-input" id="p_title" placeholder="e.g. Sales Performance Dashboard">
+      </div>
+      <div class="mform-row">
+        <div class="mform-group">
+          <label class="mform-label">Category *</label>
+          <select class="mform-select" id="p_category">
+            <option value="">Select category...</option>
+            <option>Dashboard Development</option>
+            <option>Data Analytics</option>
+            <option>CRM Management</option>
+            <option>Market Research</option>
+            <option>SQL & Database</option>
+            <option>Excel Automation</option>
+            <option>Operations Analytics</option>
+          </select>
+        </div>
+        <div class="mform-group">
+          <label class="mform-label">Emoji Icon</label>
+          <input type="text" class="mform-input" id="p_emoji" placeholder="📊" value="📊">
+        </div>
+      </div>
+      <div class="mform-group">
+        <label class="mform-label">Tools Used (comma separated) *</label>
+        <input type="text" class="mform-input" id="p_tools" placeholder="Power BI, Excel, DAX">
+      </div>
+      <div class="mform-group">
+        <label class="mform-label">Problem *</label>
+        <textarea class="mform-textarea" id="p_problem" placeholder="What problem did the client have?"></textarea>
+      </div>
+      <div class="mform-group">
+        <label class="mform-label">Solution *</label>
+        <textarea class="mform-textarea" id="p_solution" placeholder="What did you build or solve?"></textarea>
+      </div>
+      <div class="mform-group">
+        <label class="mform-label">Results *</label>
+        <input type="text" class="mform-input" id="p_results" placeholder="e.g. 34% faster reporting · Saved 6 hours/week">
+      </div>
+      <div class="mform-group">
+        <div class="published-toggle">
+          <div class="toggle on" id="p_published_toggle" onclick="togglePublished('p')"></div>
+          <span>Published (visible on website)</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('portfolio')">Cancel</button>
+      <button class="btn-save" onclick="saveProject()">Save Project</button>
+    </div>
+  </div>
+</div>
+
+<!-- BLOG MODAL -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="blogModalTitle">Add Blog Post</div>
+      <button class="modal-close" onclick="closeModal('blog')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mform-group">
+        <label class="mform-label">Post Title *</label>
+        <input type="text" class="mform-input" id="b_title" placeholder="e.g. Top Excel Automations for Small Businesses">
+      </div>
+      <div class="mform-row">
+        <div class="mform-group">
+          <label class="mform-label">Category *</label>
+          <select class="mform-select" id="b_category">
+            <option value="">Select category...</option>
+            <option>Excel Tips</option>
+            <option>Power BI</option>
+            <option>SQL</option>
+            <option>Data Analytics</option>
+            <option>AI Automation</option>
+            <option>Business Intelligence</option>
+            <option>Market Research</option>
+          </select>
+        </div>
+        <div class="mform-group">
+          <label class="mform-label">Read Time (minutes)</label>
+          <input type="number" class="mform-input" id="b_readtime" placeholder="5" value="5" min="1">
+        </div>
+      </div>
+      <div class="mform-group">
+        <label class="mform-label">Excerpt (short description) *</label>
+        <textarea class="mform-textarea" id="b_excerpt" placeholder="A brief 1-2 sentence description of the post..."></textarea>
+      </div>
+      <div class="mform-group">
+        <label class="mform-label">Full Article Content *</label>
+        <textarea class="mform-textarea" id="b_body" style="min-height:200px;" placeholder="Write your full article here..."></textarea>
+      </div>
+      <div class="mform-group">
+        <div class="published-toggle">
+          <div class="toggle on" id="b_published_toggle" onclick="togglePublished('b')"></div>
+          <span>Published (visible on website)</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('blog')">Cancel</button>
+      <button class="btn-save" onclick="savePost()">Save Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== CONFIG — CHANGE THIS PASSWORD =====
+const ADMIN_PASSWORD = 'BilalAdmin2025';
+
+// ===== AUTH =====
+function doLogin() {
+  const pwd = document.getElementById('loginPassword').value;
+  if (pwd === ADMIN_PASSWORD) {
+    sessionStorage.setItem('bk_admin', '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'block';
+    renderAll();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('loginPassword').focus();
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('bk_admin');
+  location.reload();
+}
+
+// Auto-login if session exists
+if (sessionStorage.getItem('bk_admin') === '1') {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminWrap').style.display = 'block';
+}
+
+// ===== DATA STORAGE =====
+function getData(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; }
+}
+function setData(key, val) {
+  localStorage.setItem(key, JSON.stringify(val));
+}
+
+// ===== PANEL SWITCHING =====
+function switchPanel(name, el) {
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  el.classList.add('active');
+}
+
+// ===== TOGGLE =====
+const toggleState = { p: true, b: true };
+function togglePublished(prefix) {
+  toggleState[prefix] = !toggleState[prefix];
+  const el = document.getElementById(prefix + '_published_toggle');
+  el.classList.toggle('on', toggleState[prefix]);
+}
+
+// ===== MODAL =====
+let editingIndex = { portfolio: -1, blog: -1 };
+
+function openModal(type, idx) {
+  if (type === 'portfolio') {
+    editingIndex.portfolio = (idx !== undefined) ? idx : -1;
+    document.getElementById('portfolioModalTitle').textContent = idx !== undefined ? 'Edit Project' : 'Add Portfolio Project';
+    if (idx !== undefined) {
+      const p = getData('bk_projects')[idx];
+      document.getElementById('p_title').value = p.title || '';
+      document.getElementById('p_category').value = p.category || '';
+      document.getElementById('p_emoji').value = p.emoji || '📊';
+      document.getElementById('p_tools').value = Array.isArray(p.tools) ? p.tools.join(', ') : (p.tools || '');
+      document.getElementById('p_problem').value = p.problem || '';
+      document.getElementById('p_solution').value = p.solution || '';
+      document.getElementById('p_results').value = p.results || '';
+      toggleState.p = p.published !== false;
+      document.getElementById('p_published_toggle').classList.toggle('on', toggleState.p);
+    } else {
+      ['p_title','p_tools','p_problem','p_solution','p_results'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('p_category').value = '';
+      document.getElementById('p_emoji').value = '📊';
+      toggleState.p = true;
+      document.getElementById('p_published_toggle').classList.add('on');
+    }
+    document.getElementById('portfolioModal').classList.add('open');
+  } else {
+    editingIndex.blog = (idx !== undefined) ? idx : -1;
+    document.getElementById('blogModalTitle').textContent = idx !== undefined ? 'Edit Post' : 'Add Blog Post';
+    if (idx !== undefined) {
+      const b = getData('bk_posts')[idx];
+      document.getElementById('b_title').value = b.title || '';
+      document.getElementById('b_category').value = b.category || '';
+      document.getElementById('b_readtime').value = b.readtime || 5;
+      document.getElementById('b_excerpt').value = b.excerpt || '';
+      document.getElementById('b_body').value = b.body || '';
+      toggleState.b = b.published !== false;
+      document.getElementById('b_published_toggle').classList.toggle('on', toggleState.b);
+    } else {
+      ['b_title','b_excerpt','b_body'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('b_category').value = '';
+      document.getElementById('b_readtime').value = 5;
+      toggleState.b = true;
+      document.getElementById('b_published_toggle').classList.add('on');
+    }
+    document.getElementById('blogModal').classList.add('open');
+  }
+}
+
+function closeModal(type) {
+  document.getElementById(type + 'Modal').classList.remove('open');
+}
+
+// ===== SAVE PROJECT =====
+function saveProject() {
+  const title = document.getElementById('p_title').value.trim();
+  const category = document.getElementById('p_category').value;
+  const emoji = document.getElementById('p_emoji').value.trim() || '📊';
+  const tools = document.getElementById('p_tools').value.split(',').map(t => t.trim()).filter(Boolean);
+  const problem = document.getElementById('p_problem').value.trim();
+  const solution = document.getElementById('p_solution').value.trim();
+  const results = document.getElementById('p_results').value.trim();
+  if (!title || !category || !problem || !solution || !results) {
+    showToast('Please fill in all required fields.');
+    return;
+  }
+  const projects = getData('bk_projects');
+  const entry = { title, category, emoji, tools, problem, solution, results, published: toggleState.p, date: new Date().toISOString() };
+  if (editingIndex.portfolio >= 0) {
+    projects[editingIndex.portfolio] = entry;
+    showToast('✅ Project updated!', 'success');
+  } else {
+    projects.unshift(entry);
+    showToast('✅ Project added!', 'success');
+  }
+  setData('bk_projects', projects);
+  closeModal('portfolio');
+  renderPortfolio();
+}
+
+// ===== SAVE POST =====
+function savePost() {
+  const title = document.getElementById('b_title').value.trim();
+  const category = document.getElementById('b_category').value;
+  const readtime = parseInt(document.getElementById('b_readtime').value) || 5;
+  const excerpt = document.getElementById('b_excerpt').value.trim();
+  const body = document.getElementById('b_body').value.trim();
+  if (!title || !category || !excerpt || !body) {
+    showToast('Please fill in all required fields.');
+    return;
+  }
+  const posts = getData('bk_posts');
+  const entry = { title, category, readtime, excerpt, body, published: toggleState.b, date: new Date().toISOString() };
+  if (editingIndex.blog >= 0) {
+    posts[editingIndex.blog] = entry;
+    showToast('✅ Post updated!', 'success');
+  } else {
+    posts.unshift(entry);
+    showToast('✅ Post added!', 'success');
+  }
+  setData('bk_posts', posts);
+  closeModal('blog');
+  renderBlog();
+}
+
+// ===== DELETE =====
+function deleteProject(idx) {
+  if (!confirm('Delete this project? This cannot be undone.')) return;
+  const projects = getData('bk_projects');
+  projects.splice(idx, 1);
+  setData('bk_projects', projects);
+  renderPortfolio();
+  showToast('Project deleted.');
+}
+function deletePost(idx) {
+  if (!confirm('Delete this post? This cannot be undone.')) return;
+  const posts = getData('bk_posts');
+  posts.splice(idx, 1);
+  setData('bk_posts', posts);
+  renderBlog();
+  showToast('Post deleted.');
+}
+
+// ===== RENDER PORTFOLIO =====
+function renderPortfolio() {
+  const projects = getData('bk_projects');
+  const list = document.getElementById('portfolioList');
+  document.getElementById('portfolioCount').textContent = projects.length + ' project' + (projects.length !== 1 ? 's' : '');
+  if (!projects.length) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">No projects yet</div><div class="empty-sub">Click "Add Project" to add your first portfolio item</div></div>`;
+    return;
+  }
+  list.innerHTML = projects.map((p, i) => `
+    <div class="entry-card">
+      <div class="entry-info">
+        <div class="entry-title">${p.emoji || '📊'} ${p.title}</div>
+        <div class="entry-meta" style="margin-top:6px;">
+          <span class="entry-tag">${p.category}</span>
+          ${(p.tools||[]).slice(0,3).map(t=>`<span class="entry-tag">${t}</span>`).join('')}
+          ${!p.published ? '<span style="color:#ef4444;font-size:0.75rem;font-weight:600;">● Draft</span>' : '<span style="color:#059669;font-size:0.75rem;font-weight:600;">● Published</span>'}
+        </div>
+        <div class="entry-meta" style="margin-top:6px;color:#94a3b8;">${p.results || ''}</div>
+      </div>
+      <div class="entry-actions">
+        <button class="btn-edit" onclick="openModal('portfolio',${i})">Edit</button>
+        <button class="btn-delete" onclick="deleteProject(${i})">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+// ===== RENDER BLOG =====
+function renderBlog() {
+  const posts = getData('bk_posts');
+  const list = document.getElementById('blogList');
+  document.getElementById('blogCount').textContent = posts.length + ' post' + (posts.length !== 1 ? 's' : '');
+  if (!posts.length) {
+    list.innerHTML = `<div class="empty-state"><div class="empty-icon">✍️</div><div class="empty-text">No posts yet</div><div class="empty-sub">Click "New Post" to write your first article</div></div>`;
+    return;
+  }
+  list.innerHTML = posts.map((p, i) => `
+    <div class="entry-card">
+      <div class="entry-info">
+        <div class="entry-title">${p.title}</div>
+        <div class="entry-meta" style="margin-top:6px;">
+          <span class="entry-tag">${p.category}</span>
+          <span style="font-size:0.75rem;color:#94a3b8;">${p.readtime} min read</span>
+          &nbsp;
+          ${!p.published ? '<span style="color:#ef4444;font-size:0.75rem;font-weight:600;">● Draft</span>' : '<span style="color:#059669;font-size:0.75rem;font-weight:600;">● Published</span>'}
+        </div>
+        <div class="entry-meta" style="margin-top:6px;color:#94a3b8;">${(p.excerpt||'').slice(0,100)}${p.excerpt&&p.excerpt.length>100?'...':''}</div>
+      </div>
+      <div class="entry-actions">
+        <button class="btn-edit" onclick="openModal('blog',${i})">Edit</button>
+        <button class="btn-delete" onclick="deletePost(${i})">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderAll() { renderPortfolio(); renderBlog(); }
+
+// ===== EXPORT DATA (for backup) =====
+function exportData() {
+  const data = { projects: getData('bk_projects'), posts: getData('bk_posts'), exported: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'bilalkhan-cms-backup.json'; a.click();
+}
+
+// ===== TOAST =====
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type ? ' ' + type : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== CLOSE MODALS ON OVERLAY CLICK =====
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+});
+
+// ===== RENDER ON LOAD =====
+if (sessionStorage.getItem('bk_admin') === '1') renderAll();
+</script>
+</body>
+</html>
