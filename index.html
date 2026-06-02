@@ -1097,20 +1097,8 @@ footer {
   .section { padding: 64px 0; }
 }
 </style>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
-  }
-</script>
-  <body>
+<body>
 
 <!-- ===== NAV ===== -->
 <nav id="mainNav">
@@ -1706,103 +1694,13 @@ footer {
 
   <section class="section">
     <div class="container">
-      <div class="portfolio-grid">
-
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">
-            <div class="portfolio-thumb-bg"></div>
-            <div class="portfolio-thumb-icon">📊</div>
-          </div>
-          <div class="portfolio-body">
-            <div class="portfolio-category">Dashboard Development</div>
-            <div class="portfolio-title">Sales Performance Dashboard</div>
-            <div class="portfolio-tools">
-              <span class="tool-tag">Power BI</span>
-              <span class="tool-tag">Excel</span>
-              <span class="tool-tag">DAX</span>
-            </div>
-            <div class="portfolio-desc"><strong>Problem:</strong> Client had sales data spread across 12 spreadsheets with no unified view of performance by region, product, or rep.<br><br><strong>Solution:</strong> Built a connected Power BI dashboard with real-time slicers, trend lines, and automated monthly refresh.</div>
-            <div class="portfolio-result">📈 <strong>+34% faster reporting</strong> · Eliminated 6 hours/week of manual consolidation</div>
-            <a href="#" onclick="showPage('contact')" class="btn btn-outline-dark btn-sm">Discuss Similar Project →</a>
-          </div>
+      <!-- CMS-powered portfolio grid. Falls back to default projects if no CMS content exists yet -->
+      <div class="portfolio-grid" id="portfolioGrid">
+        <!-- Loading state -->
+        <div id="portfolioLoading" style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-secondary);">
+          <div style="font-size:2rem;margin-bottom:12px;">⏳</div>
+          <div>Loading projects...</div>
         </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">
-            <div class="portfolio-thumb-bg"></div>
-            <div class="portfolio-thumb-icon">📦</div>
-          </div>
-          <div class="portfolio-body">
-            <div class="portfolio-category">Operations Analytics</div>
-            <div class="portfolio-title">Inventory Management Dashboard</div>
-            <div class="portfolio-tools">
-              <span class="tool-tag">Excel</span>
-              <span class="tool-tag">Power BI</span>
-              <span class="tool-tag">Power Query</span>
-            </div>
-            <div class="portfolio-desc"><strong>Problem:</strong> E-commerce client was losing $15K/month due to stock-outs and overstock situations with no visibility into reorder points.<br><br><strong>Solution:</strong> Created an automated inventory tracker with reorder alerts, stock turnover analysis, and supplier performance tracking.</div>
-            <div class="portfolio-result">📉 <strong>40% reduction in stock-outs</strong> · $8K/month savings recovered</div>
-            <a href="#" onclick="showPage('contact')" class="btn btn-outline-dark btn-sm">Discuss Similar Project →</a>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">
-            <div class="portfolio-thumb-bg"></div>
-            <div class="portfolio-thumb-icon">🏢</div>
-          </div>
-          <div class="portfolio-body">
-            <div class="portfolio-category">CRM & Data Management</div>
-            <div class="portfolio-title">CRM Data Management System</div>
-            <div class="portfolio-tools">
-              <span class="tool-tag">Excel</span>
-              <span class="tool-tag">CRM</span>
-              <span class="tool-tag">VBA</span>
-            </div>
-            <div class="portfolio-desc"><strong>Problem:</strong> Agency had 20,000+ contacts with duplicate records, inconsistent formatting, and 35% data entry errors reducing campaign effectiveness.<br><br><strong>Solution:</strong> Cleaned, deduplicated, and restructured the entire database with a validation system to prevent future errors.</div>
-            <div class="portfolio-result">✅ <strong>35% → 2% error rate</strong> · Email open rates improved 28%</div>
-            <a href="#" onclick="showPage('contact')" class="btn btn-outline-dark btn-sm">Discuss Similar Project →</a>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">
-            <div class="portfolio-thumb-bg"></div>
-            <div class="portfolio-thumb-icon">🔍</div>
-          </div>
-          <div class="portfolio-body">
-            <div class="portfolio-category">Market Research</div>
-            <div class="portfolio-title">Competitor Market Research Report</div>
-            <div class="portfolio-tools">
-              <span class="tool-tag">Excel</span>
-              <span class="tool-tag">Web Research</span>
-              <span class="tool-tag">Google Sheets</span>
-            </div>
-            <div class="portfolio-desc"><strong>Problem:</strong> Startup entering a new market needed a structured analysis of 15 competitors including pricing, features, and positioning.<br><br><strong>Solution:</strong> Delivered a comprehensive 40-page research report with side-by-side competitor comparison, pricing analysis, and strategic recommendations.</div>
-            <div class="portfolio-result">🎯 <strong>Used to secure $200K funding round</strong> · Delivered in 4 days</div>
-            <a href="#" onclick="showPage('contact')" class="btn btn-outline-dark btn-sm">Discuss Similar Project →</a>
-          </div>
-        </div>
-
-        <div class="portfolio-card">
-          <div class="portfolio-thumb">
-            <div class="portfolio-thumb-bg"></div>
-            <div class="portfolio-thumb-icon">🗄️</div>
-          </div>
-          <div class="portfolio-body">
-            <div class="portfolio-category">Database & Reporting</div>
-            <div class="portfolio-title">SQL Automated Reporting System</div>
-            <div class="portfolio-tools">
-              <span class="tool-tag">SQL</span>
-              <span class="tool-tag">MySQL</span>
-              <span class="tool-tag">Excel</span>
-            </div>
-            <div class="portfolio-desc"><strong>Problem:</strong> Healthcare client's reporting team spent 3 hours daily pulling the same data manually from multiple database tables.<br><br><strong>Solution:</strong> Wrote parameterized SQL stored procedures and scheduled queries that automatically generated daily, weekly, and monthly reports.</div>
-            <div class="portfolio-result">⏱ <strong>15 hours/week saved</strong> · Reports now generated in under 2 minutes</div>
-            <a href="#" onclick="showPage('contact')" class="btn btn-outline-dark btn-sm">Discuss Similar Project →</a>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -2034,80 +1932,63 @@ footer {
         <span class="blog-cat" onclick="filterBlog(this,'bi')">Business Intelligence</span>
       </div>
 
+      <!-- CMS-powered blog grid. Falls back to default posts if no CMS content yet -->
       <div class="blog-grid" id="blogGrid">
+        <div id="blogLoading" style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-secondary);">
+          <div style="font-size:2rem;margin-bottom:12px;">⏳</div>
+          <div>Loading posts...</div>
+        </div>
 
-        <div class="blog-card" data-cat="excel">
+        <!-- Default posts shown as fallback (hidden until JS decides) -->
+        <div class="blog-card blog-default" data-cat="excel" style="display:none;">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#0a3d62,#1e5f74);">📊</div>
           <div class="blog-body">
-            <div class="blog-meta">
-              <span class="blog-cat-tag">Excel Tips</span>
-              <span>June 2025 · 8 min read</span>
-            </div>
+            <div class="blog-meta"><span class="blog-cat-tag">Excel Tips</span><span>June 2025 · 8 min read</span></div>
             <div class="blog-title">Top 10 Excel Automations Every Small Business Should Use in 2025</div>
             <div class="blog-excerpt">Stop doing manually what Excel can do for you. From auto-populating invoices to building self-refreshing dashboards — here are the automations that save real time.</div>
             <div class="blog-read-more">Read Article →</div>
           </div>
         </div>
-
-        <div class="blog-card" data-cat="powerbi">
+        <div class="blog-card blog-default" data-cat="powerbi" style="display:none;">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">📈</div>
           <div class="blog-body">
-            <div class="blog-meta">
-              <span class="blog-cat-tag">Power BI</span>
-              <span>May 2025 · 10 min read</span>
-            </div>
+            <div class="blog-meta"><span class="blog-cat-tag">Power BI</span><span>May 2025 · 10 min read</span></div>
             <div class="blog-title">Power BI Dashboard Best Practices: What Most Freelancers Get Wrong</div>
             <div class="blog-excerpt">A good dashboard isn't just pretty — it answers questions. Here's how to design Power BI dashboards that stakeholders actually use and understand.</div>
             <div class="blog-read-more">Read Article →</div>
           </div>
         </div>
-
-        <div class="blog-card" data-cat="ai">
+        <div class="blog-card blog-default" data-cat="ai" style="display:none;">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#0f0c29,#302b63);">🤖</div>
           <div class="blog-body">
-            <div class="blog-meta">
-              <span class="blog-cat-tag">AI Automation</span>
-              <span>May 2025 · 7 min read</span>
-            </div>
+            <div class="blog-meta"><span class="blog-cat-tag">AI Automation</span><span>May 2025 · 7 min read</span></div>
             <div class="blog-title">AI Tools Every Data Analyst Should Know in 2025</div>
-            <div class="blog-excerpt">From ChatGPT for SQL generation to Copilot in Excel — the AI tools that are actually changing how analysts work today, and how to use them responsibly.</div>
+            <div class="blog-excerpt">From ChatGPT for SQL generation to Copilot in Excel — the AI tools that are actually changing how analysts work today.</div>
             <div class="blog-read-more">Read Article →</div>
           </div>
         </div>
-
-        <div class="blog-card" data-cat="analytics">
+        <div class="blog-card blog-default" data-cat="analytics" style="display:none;">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#0d324d,#7f5a83);">🧹</div>
           <div class="blog-body">
-            <div class="blog-meta">
-              <span class="blog-cat-tag">Data Analytics</span>
-              <span>April 2025 · 9 min read</span>
-            </div>
+            <div class="blog-meta"><span class="blog-cat-tag">Data Analytics</span><span>April 2025 · 9 min read</span></div>
             <div class="blog-title">How to Clean Business Data Efficiently: A Step-by-Step Process</div>
-            <div class="blog-excerpt">Garbage in, garbage out. The data cleaning process most analysts use is slow and inconsistent. Here's a systematic approach that works at any scale.</div>
+            <div class="blog-excerpt">Garbage in, garbage out. A systematic data cleaning approach that works at any scale.</div>
             <div class="blog-read-more">Read Article →</div>
           </div>
         </div>
-
-        <div class="blog-card" data-cat="sql">
+        <div class="blog-card blog-default" data-cat="sql" style="display:none;">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#0a1628,#1a3060);">🗄️</div>
           <div class="blog-body">
-            <div class="blog-meta">
-              <span class="blog-cat-tag">SQL</span>
-              <span>April 2025 · 12 min read</span>
-            </div>
+            <div class="blog-meta"><span class="blog-cat-tag">SQL</span><span>April 2025 · 12 min read</span></div>
             <div class="blog-title">SQL Tips for Business Reporting: Queries That Actually Get Used</div>
-            <div class="blog-excerpt">Most SQL guides focus on syntax. This one focuses on patterns: the exact query structures that answer the business questions stakeholders ask every month.</div>
+            <div class="blog-excerpt">The exact query structures that answer the business questions stakeholders ask every month.</div>
             <div class="blog-read-more">Read Article →</div>
           </div>
         </div>
-
-        <div class="blog-card" data-cat="bi">
+        <div class="blog-card blog-default" data-cat="bi" style="display:none;">
           <div class="blog-thumb" style="background:linear-gradient(135deg,#093028,#237a57);">💡</div>
           <div class="blog-body">
-            <div class="blog-meta">
-              <span class="blog-cat-tag">Business Intelligence</span>
-              <span>March 2025 · 6 min read</span>
-            </div>
+            <div class="blog-meta"><span class="blog-cat-tag">Business Intelligence</span><span>March 2025 · 6 min read</span></div>
             <div class="blog-title">What is Business Intelligence? A Plain-English Guide for SMB Owners</div>
             <div class="blog-excerpt">BI doesn't require a data warehouse or a six-figure budget. Here's how small businesses can implement basic BI practices with tools they already have.</div>
             <div class="blog-read-more">Read Article →</div>
@@ -2421,9 +2302,173 @@ function showToast(msg, type) {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
+// ===== DEFAULT PORTFOLIO PROJECTS (shown when no CMS content exists yet) =====
+const DEFAULT_PROJECTS = [
+  {
+    title: 'Sales Performance Dashboard',
+    category: 'Dashboard Development',
+    emoji: '📊',
+    tools: ['Power BI', 'Excel', 'DAX'],
+    problem: 'Client had sales data spread across 12 spreadsheets with no unified view of performance by region, product, or rep.',
+    solution: 'Built a connected Power BI dashboard with real-time slicers, trend lines, and automated monthly refresh.',
+    results: '+34% faster reporting · Eliminated 6 hours/week of manual consolidation',
+    published: true
+  },
+  {
+    title: 'Inventory Management Dashboard',
+    category: 'Operations Analytics',
+    emoji: '📦',
+    tools: ['Excel', 'Power BI', 'Power Query'],
+    problem: 'E-commerce client was losing $15K/month due to stock-outs and overstock with no visibility into reorder points.',
+    solution: 'Created an automated inventory tracker with reorder alerts, stock turnover analysis, and supplier performance tracking.',
+    results: '40% reduction in stock-outs · $8K/month savings recovered',
+    published: true
+  },
+  {
+    title: 'CRM Data Management System',
+    category: 'CRM Management',
+    emoji: '🏢',
+    tools: ['Excel', 'CRM', 'VBA'],
+    problem: 'Agency had 20,000+ contacts with duplicate records, inconsistent formatting, and 35% data entry errors.',
+    solution: 'Cleaned, deduplicated, and restructured the entire database with a validation system to prevent future errors.',
+    results: '35% → 2% error rate · Email open rates improved 28%',
+    published: true
+  },
+  {
+    title: 'Competitor Market Research Report',
+    category: 'Market Research',
+    emoji: '🔍',
+    tools: ['Excel', 'Web Research', 'Google Sheets'],
+    problem: 'Startup entering a new market needed a structured analysis of 15 competitors including pricing and positioning.',
+    solution: 'Delivered a comprehensive 40-page research report with side-by-side competitor comparison and strategic recommendations.',
+    results: 'Used to secure $200K funding round · Delivered in 4 days',
+    published: true
+  },
+  {
+    title: 'SQL Automated Reporting System',
+    category: 'SQL & Database',
+    emoji: '🗄️',
+    tools: ['SQL', 'MySQL', 'Excel'],
+    problem: "Healthcare client's reporting team spent 3 hours daily pulling the same data manually from multiple database tables.",
+    solution: 'Wrote parameterized SQL stored procedures and scheduled queries that automatically generated daily, weekly, and monthly reports.',
+    results: '15 hours/week saved · Reports now generated in under 2 minutes',
+    published: true
+  }
+];
+
+// ===== RENDER A PORTFOLIO CARD =====
+function renderProjectCard(p) {
+  const tools = Array.isArray(p.tools) ? p.tools : (p.tools || '').split(',').map(t => t.trim()).filter(Boolean);
+  return `
+    <div class="portfolio-card">
+      <div class="portfolio-thumb">
+        <div class="portfolio-thumb-bg"></div>
+        <div class="portfolio-thumb-icon">${p.emoji || '📊'}</div>
+      </div>
+      <div class="portfolio-body">
+        <div class="portfolio-category">${p.category || ''}</div>
+        <div class="portfolio-title">${p.title || ''}</div>
+        <div class="portfolio-tools">
+          ${tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}
+        </div>
+        <div class="portfolio-desc">
+          <strong>Problem:</strong> ${p.problem || ''}<br><br>
+          <strong>Solution:</strong> ${p.solution || ''}
+        </div>
+        <div class="portfolio-result">📈 <strong>${p.results || ''}</strong></div>
+        <a href="#" onclick="showPage('contact')" class="btn btn-outline-dark btn-sm">Discuss Similar Project →</a>
+      </div>
+    </div>`;
+}
+
+// ===== LOAD PORTFOLIO FROM CMS =====
+// Decap CMS saves each project as a markdown file in /_projects/
+// We try to load a manifest file; if it doesn't exist yet, fall back to defaults.
+async function loadPortfolio() {
+  const grid = document.getElementById('portfolioGrid');
+  const loading = document.getElementById('portfolioLoading');
+  if (!grid) return;
+
+  try {
+    // Try fetching the CMS-generated project index
+    const res = await fetch('/_projects/index.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('No CMS index yet');
+    const projects = await res.json();
+    const published = projects.filter(p => p.published !== false);
+    if (!published.length) throw new Error('Empty');
+    if (loading) loading.remove();
+    grid.innerHTML = published.map(renderProjectCard).join('');
+  } catch {
+    // Fall back to default hardcoded projects
+    if (loading) loading.remove();
+    grid.innerHTML = DEFAULT_PROJECTS.map(renderProjectCard).join('');
+  }
+  observeFadeIns();
+}
+
+// ===== RENDER A BLOG CARD =====
+const BLOG_GRADIENTS = [
+  'linear-gradient(135deg,#0a3d62,#1e5f74)',
+  'linear-gradient(135deg,#1a1a2e,#16213e)',
+  'linear-gradient(135deg,#0f0c29,#302b63)',
+  'linear-gradient(135deg,#0d324d,#7f5a83)',
+  'linear-gradient(135deg,#0a1628,#1a3060)',
+  'linear-gradient(135deg,#093028,#237a57)'
+];
+const BLOG_EMOJIS = { 'Excel Tips':'📊', 'Power BI':'📈', 'SQL':'🗄️', 'Data Analytics':'🧹', 'AI Automation':'🤖', 'Business Intelligence':'💡' };
+const BLOG_CAT_KEYS = { 'Excel Tips':'excel', 'Power BI':'powerbi', 'SQL':'sql', 'Data Analytics':'analytics', 'AI Automation':'ai', 'Business Intelligence':'bi' };
+
+function renderBlogCard(p, idx) {
+  const cat = p.category || 'Data Analytics';
+  const catKey = BLOG_CAT_KEYS[cat] || 'analytics';
+  const emoji = BLOG_EMOJIS[cat] || '📊';
+  const gradient = BLOG_GRADIENTS[idx % BLOG_GRADIENTS.length];
+  const date = p.date ? new Date(p.date).toLocaleDateString('en-US', {month:'long', year:'numeric'}) : '2025';
+  const readtime = p.readtime || 5;
+  return `
+    <div class="blog-card" data-cat="${catKey}">
+      <div class="blog-thumb" style="background:${gradient};">${emoji}</div>
+      <div class="blog-body">
+        <div class="blog-meta">
+          <span class="blog-cat-tag">${cat}</span>
+          <span>${date} · ${readtime} min read</span>
+        </div>
+        <div class="blog-title">${p.title || ''}</div>
+        <div class="blog-excerpt">${p.excerpt || ''}</div>
+        <div class="blog-read-more">Read Article →</div>
+      </div>
+    </div>`;
+}
+
+// ===== LOAD BLOG FROM CMS =====
+async function loadBlog() {
+  const grid = document.getElementById('blogGrid');
+  const loading = document.getElementById('blogLoading');
+  if (!grid) return;
+
+  try {
+    const res = await fetch('/_posts/index.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('No CMS posts yet');
+    const posts = await res.json();
+    const published = posts.filter(p => p.published !== false);
+    if (!published.length) throw new Error('Empty');
+    if (loading) loading.remove();
+    // Remove default hidden cards
+    grid.querySelectorAll('.blog-default').forEach(el => el.remove());
+    // Insert CMS cards
+    grid.insertAdjacentHTML('afterbegin', published.map((p,i) => renderBlogCard(p,i)).join(''));
+  } catch {
+    // Show the default hidden fallback cards
+    if (loading) loading.remove();
+    grid.querySelectorAll('.blog-default').forEach(el => el.style.display = 'block');
+  }
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
   observeFadeIns();
+  loadPortfolio();
+  loadBlog();
 });
 </script>
 </body>
