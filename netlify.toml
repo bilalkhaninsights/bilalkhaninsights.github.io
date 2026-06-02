@@ -1,0 +1,8 @@
+# netlify.toml
+# Place this file in the ROOT of your GitHub repository (same level as index.html)
+
+[build]
+  publish = "."
+
+[[plugins]]
+  package = "./netlify/plugins/generate-cms-index"
