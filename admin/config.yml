@@ -2,6 +2,7 @@ backend:
   name: github
   repo: bilalkhaninsights/bilalkhaninsights.github.io
   branch: main
+  site_domain: bilalkhaninsights.netlify.app
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
